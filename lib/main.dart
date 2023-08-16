@@ -4,12 +4,17 @@ import 'package:device_preview_screenshot/device_preview_screenshot.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:logger_plus/logger_plus.dart';
+import 'package:riverpod_playground/core/logging/logger_provider.dart';
 import 'package:riverpod_playground/core/router/router.dart';
+import 'package:riverpod_playground/shared/devtools/device_preview.dart';
 import 'package:riverpod_playground/shared/widgets/markdown/code_syntax_highligher.dart';
 import 'package:syntax_highlight/syntax_highlight.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  LogConsole.init();
 
   await Highlighter.initialize(['dart', 'yaml']);
   final theme = await HighlighterTheme.loadDarkTheme();
@@ -18,9 +23,16 @@ Future<void> main() async {
     theme: theme,
   );
 
+  LogConsole.init();
+
+  final logger = Logger(
+    printer: PrettyPrinter(),
+  );
+
   final container = ProviderContainer(
     overrides: [
       highlighterProvider.overrideWithValue(highlighter),
+      loggerProvider.overrideWithValue(logger),
     ],
   );
 
@@ -45,6 +57,7 @@ class MainApp extends ConsumerWidget {
     return DevicePreview(
       enabled: enabled,
       tools: [
+        ...DevicePreviewTools.customTools,
         ...DevicePreview.defaultTools,
         if (!kIsWeb) ...[
           DevicePreviewScreenshot(

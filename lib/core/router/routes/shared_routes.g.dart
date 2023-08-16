@@ -6,7 +6,7 @@ part of 'shared_routes.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$sharedRoutesHash() => r'a7c45485a416d2838d5b6852dd80f9133f6cec66';
+String _$sharedRoutesHash() => r'ffb336534bc2ac3cd374f3c2b7dc668f5a8eff21';
 
 /// See also [sharedRoutes].
 @ProviderFor(sharedRoutes)

@@ -6,7 +6,7 @@ part of 'login_routes.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$loginRoutesHash() => r'b5fbfa14670da647936b3d0170aebde860131d38';
+String _$loginRoutesHash() => r'dd34034bf2aca68dd589e3b18e63430dc35b5746';
 
 /// See also [loginRoutes].
 @ProviderFor(loginRoutes)

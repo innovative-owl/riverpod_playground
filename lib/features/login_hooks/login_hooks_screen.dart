@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:logger_plus/logger_plus.dart';
 import 'package:riverpod_playground/core/extensions/context_theme_extensions.dart';
+import 'package:riverpod_playground/core/logging/logger_provider.dart';
 import 'package:riverpod_playground/shared/widgets/code_view.dart';
 
 class LoginHooksScreen extends HookConsumerWidget {
@@ -32,6 +34,8 @@ class LoginHooksScreen extends HookConsumerWidget {
     final isValid = emailValid && passwordValid;
 
     Future<void> login() async {
+      ref.read(loggerProvider).i('login');
+
       /// Reset the error message
       errorMessage.value = null;
       isLoading.value = true;
@@ -45,11 +49,13 @@ class LoginHooksScreen extends HookConsumerWidget {
       isLoading.value = false;
 
       if (shouldError.value) {
+        ref.read(loggerProvider).e('Invalid email or password');
         errorMessage.value = 'Invalid email or password';
         return;
       }
 
       if (context.mounted) {
+        ref.read(loggerProvider).i('Login Successful');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Login Successful'),
@@ -75,6 +81,23 @@ class LoginHooksScreen extends HookConsumerWidget {
               );
             },
             icon: const Icon(Icons.code),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.push<void>(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return LogConsole(
+                      dark: true,
+                      showCloseButton: true,
+                    );
+                  },
+                  fullscreenDialog: true,
+                ),
+              );
+            },
+            icon: const Icon(Icons.logo_dev),
           ),
         ],
       ),
